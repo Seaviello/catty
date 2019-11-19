@@ -8,33 +8,33 @@ import {
 
 interface Props {
   text: string;
-  last?: boolean;
+    withSeparator?: boolean;
 }
 
 const NavigationTab: React.FC<Props & TouchableOpacityProps> = ({
   text,
-  last,
+                                                                    withSeparator,
   ...props
 }) => (
   <TouchableOpacity
     {...props}
-    style={[styles.container, !last && styles.withSeparator]}>
+    style={[styles.container, withSeparator && styles.withSeparator]}>
     <Text style={styles.text}>{text}</Text>
   </TouchableOpacity>
 );
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#DEDEDE',
-    height: 45,
+    backgroundColor: '#EAEAEA',
     flex: 1,
+      height: 48,
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 16,
   },
   withSeparator: {
-    borderRightColor: 'gray',
+    borderColor: 'gray',
     borderRightWidth: 1,
+    borderLeftWidth: 1,
   },
   text: {
     fontSize: 16,
