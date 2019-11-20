@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
 import Navigation from './navigation/Navigation';
 import {Card} from './components/Card/Card';
@@ -16,9 +16,11 @@ const App = () => {
   const infoRef = useRef<View>(null);
   const aboutRef = useRef<View>(null);
   const customiseRef = useRef<View>(null);
-  registerNode({id: ABOUT, node: aboutRef});
-  registerNode({id: INFO, node: infoRef});
-  registerNode({id: CUSTOMISE, node: customiseRef});
+  useEffect(() => {
+    registerNode({id: ABOUT, node: aboutRef});
+    registerNode({id: INFO, node: infoRef});
+    registerNode({id: CUSTOMISE, node: customiseRef});
+  }, [])
   return (
     <ScrollContext.Provider value={contextValue.current}>
       <SafeAreaView style={styles.container}>

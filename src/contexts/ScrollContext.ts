@@ -1,23 +1,26 @@
-import React, {useRef} from 'react';
+import {useRef, createContext, Context, RefObject} from 'react';
 import {ScrollView, findNodeHandle} from "react-native";
 
-export const INFO = Symbol('INFO');
-export const ABOUT = Symbol('ABOUT');
-export const CUSTOMISE = Symbol('CUSTOMISE');
+/* Because neither symbols nor primitives can be used as keys in WeakMap, I came with "special" objects */
+const getIdentifier = (s: string) => [Symbol(s)];
+
+export const INFO = getIdentifier('INFO');
+export const ABOUT = getIdentifier('ABOUT');
+export const CUSTOMISE = getIdentifier('CUSTOMISE');
 
 export type ScrollableComponentId = typeof INFO | typeof ABOUT | typeof CUSTOMISE;
 
 interface ScrollContextType {
     scrollTo: (componentId: ScrollableComponentId) => void,
-    registerNode: (registerData: { id: ScrollableComponentId, node: React.RefObject<any> }) => any,
+    registerNode: (registerData: { id: ScrollableComponentId, node: RefObject<any> }) => any,
 }
 
-export const ScrollContext: React.Context<Partial<ScrollContextType>> =
-    React.createContext({});
+export const ScrollContext: Context<Partial<ScrollContextType>> =
+    createContext({});
 
 export function useScrollHandler() {
     const scrollView = useRef<ScrollView>(null)
-    const nodes = useRef(new Map<ScrollableComponentId, React.RefObject<any>>())
+    const nodes = useRef(new WeakMap<ScrollableComponentId, RefObject<any>>())
 
     const scrollTo = (componentId: ScrollableComponentId) => {
         const node = nodes.current.get(componentId);
@@ -27,7 +30,7 @@ export function useScrollHandler() {
             })
         }
     }
-    const registerNode = ({id, node}: { id: ScrollableComponentId, node: React.RefObject<any> }) => {
+    const registerNode = ({id, node}: { id: ScrollableComponentId, node: RefObject<any> }) => {
         nodes.current.set(id, node);
     }
     return {scrollView, scrollTo, registerNode};
