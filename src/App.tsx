@@ -1,20 +1,27 @@
 import React, {useRef} from 'react';
-import {SafeAreaView, ScrollView, StyleSheet, Text, View,} from 'react-native';
-import Navigation from './src/navigation/Navigation';
-import {Card} from './src/components/Card/Card';
-import {ABOUT, CUSTOMISE, INFO, ScrollContext, useScrollHandler,} from './src/contexts/ScrollContext';
+import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
+import Navigation from './navigation/Navigation';
+import {Card} from './components/Card/Card';
+import {
+  ABOUT,
+  CUSTOMISE,
+  INFO,
+  ScrollContext,
+  useScrollHandler,
+} from './contexts/ScrollContext';
 
 const App = () => {
   const {scrollView, registerNode, scrollTo} = useScrollHandler();
+  const contextValue = useRef({registerNode, scrollTo});
   const infoRef = useRef<View>(null);
   const aboutRef = useRef<View>(null);
   const customiseRef = useRef<View>(null);
-    registerNode({id: ABOUT, node: aboutRef});
-    registerNode({id: INFO, node: infoRef});
-    registerNode({id: CUSTOMISE, node: customiseRef});
+  registerNode({id: ABOUT, node: aboutRef});
+  registerNode({id: INFO, node: infoRef});
+  registerNode({id: CUSTOMISE, node: customiseRef});
   return (
-    <ScrollContext.Provider value={scrollTo}>
-      <SafeAreaView style={styles.container} >
+    <ScrollContext.Provider value={contextValue.current}>
+      <SafeAreaView style={styles.container}>
         <ScrollView ref={scrollView}>
           <Navigation />
           <View style={styles.core}>

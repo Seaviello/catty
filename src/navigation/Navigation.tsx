@@ -11,13 +11,13 @@ const styles = StyleSheet.create({
 });
 
 const Navigation: React.FC = () => {
-    const scrollTo = useContext(ScrollContext);
+    const {scrollTo} = useContext(ScrollContext);
 
     return (
         <View style={styles.container} >
-            <NavigationTab text={'Info'} onPress={() => scrollTo(INFO)}/>
-            <NavigationTab text={'About'} onPress={() => scrollTo(ABOUT)} withSeparator={true}/>
-            <NavigationTab text={'Customise!'} onPress={() => scrollTo(CUSTOMISE)} />
+            <NavigationTab text={'Info'} onPress={() => scrollTo!(INFO)}/>
+            <NavigationTab text={'About'} onPress={() => scrollTo!(ABOUT)} withSeparator={true}/>
+            <NavigationTab text={'Customise!'} onPress={() => scrollTo!(CUSTOMISE)} />
         </View>
     );
 };
