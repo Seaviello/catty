@@ -1,31 +1,31 @@
-import React, {useCallback, useRef} from 'react';
-import {ScrollView, View} from "react-native";
+import React, {ReactNode, Ref, useCallback, useLayoutEffect, useRef} from 'react';
+import {InteractionManager, ScrollView, findNodeHandle} from "react-native";
 
-export enum CardType {
-    INFO,
-    ABOUT,
-    CUSTOMISE,
-}
 
-export const ScrollContext: React.Context<(cardType?: CardType) => void> = React.createContext(() => {
-});
+export const INFO = Symbol('INFO');
+export const ABOUT = Symbol('ABOUT');
+export const CUSTOMISE = Symbol('CUSTOMISE');
+
+export type ScrollableComponentId = typeof INFO | typeof ABOUT | typeof CUSTOMISE;
+
+export const ScrollContext: React.Context<(componentId: ScrollableComponentId) => void> =
+    React.createContext((componentId: ScrollableComponentId) => {
+    });
 
 export function useScrollHandler() {
     const scrollView = useRef<ScrollView>(null)
-    const infoRef = useRef<View>(null);
-    const aboutRef = useRef<View>(null);
-    const customiseRef = useRef<View>(null);
-    const positions = useRef(new Map<CardType, number>())
-    const scrollTo = useCallback((cardType?: CardType) => {
-        switch (cardType) {
-            case CardType.ABOUT:
-            case CardType.INFO:
-            case CardType.CUSTOMISE:
-                scrollView.current?.scrollTo({y: positions.current.get(cardType) || 0})
-        }
-    }, [infoRef, aboutRef, customiseRef])
-    infoRef.current?.measure((_, y) => positions.current.set(CardType.INFO, y));
-    aboutRef.current?.measure((_, y) => positions.current.set(CardType.ABOUT, y));
-    customiseRef.current?.measure((_, y) => positions.current.set(CardType.CUSTOMISE, y));
-    return {scrollView, infoRef, aboutRef, customiseRef, scrollTo};
+    const nodes = useRef(new Map<ScrollableComponentId, React.RefObject<any>>())
+
+    const scrollTo = (componentId: ScrollableComponentId) => {
+            const node = nodes.current.get(componentId);
+            if (node){
+                node.current.measureLayout(findNodeHandle(scrollView.current), ( _ :number, y:number ) => {
+                    scrollView.current?.scrollTo({y})
+                })
+            }
+    }
+    const registerNode = ({id, node}: {id: ScrollableComponentId, node: React.RefObject<any>}) => {
+        nodes.current.set(id, node);
+    }
+    return {scrollView, scrollTo, registerNode};
 }
