@@ -1,5 +1,5 @@
 ## Overview
-1. *Lack of proper testing with enzyme* mdue to lack of time. It was caused mostly because of combination of multiple technologies 
+1. *Lack of proper testing with enzyme* due to lack of time. It was caused mostly because of combination of multiple technologies 
 interacting with each other: hooks, react-native and enzyme. This combination is fresh to me. Some of the solutions would require investigation and
 some of the issues are easy to solve: [link](https://github.com/airbnb/enzyme/issues/2176#issuecomment-507462912). 
 Also it would be useful to setup properly storybook for stories + storyshots.
