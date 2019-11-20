@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`themeReducer should handle resetColor action 1`] = `
+Object {
+  "appBackgroundColor": "#90caf9",
+}
+`;
+
+exports[`themeReducer should handle setColor action 1`] = `
+Object {
+  "appBackgroundColor": "red",
+}
+`;

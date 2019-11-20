@@ -1,6 +1,6 @@
 import {ThemeActionTypes} from '../actions/themeActionTypes';
 
-const DEFAULT_COLOR = '#90caf9';
+export const DEFAULT_COLOR = '#90caf9';
 
 const initialState = {
   appBackgroundColor: DEFAULT_COLOR,

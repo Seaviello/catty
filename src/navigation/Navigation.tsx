@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Navigation: React.FC = () => {
+const Navigation = () => {
   const {scrollTo} = useContext(ScrollContext);
 
   return (
