@@ -1,64 +1,28 @@
-import React, {useEffect, useRef} from 'react';
-import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
+import React, {useRef} from 'react';
+import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
+import {PersistGate} from 'redux-persist/integration/react';
+import {Provider} from 'react-redux';
 import Navigation from './navigation/Navigation';
-import {Card} from './components/Card/Card';
-import {
-  ABOUT,
-  CUSTOMISE,
-  INFO,
-  ScrollContext,
-  useScrollHandler,
-} from './contexts/ScrollContext';
+import {ScrollContext, useScrollHandler} from './contexts/ScrollContext';
+import {persistor, store} from './store/store';
+import {Core} from './Core';
 
 const App = () => {
   const {scrollView, registerNode, scrollTo} = useScrollHandler();
   const contextValue = useRef({registerNode, scrollTo});
-  const infoRef = useRef<View>(null);
-  const aboutRef = useRef<View>(null);
-  const customiseRef = useRef<View>(null);
-  useEffect(() => {
-    registerNode({id: ABOUT, node: aboutRef});
-    registerNode({id: INFO, node: infoRef});
-    registerNode({id: CUSTOMISE, node: customiseRef});
-  }, [])
   return (
-    <ScrollContext.Provider value={contextValue.current}>
-      <SafeAreaView style={styles.container}>
-        <ScrollView ref={scrollView}>
-          <Navigation />
-          <View style={styles.core}>
-            <View style={styles.card} ref={infoRef}>
-              <Card
-                imageUrl={'https://cataas.com/cat/says/woff'}
-                header={'Intro'}
-                description={
-                  "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."
-                }
-              />
-            </View>
-            <View style={styles.card} ref={aboutRef}>
-              <Card
-                imageUrl={'https://cataas.com/cat/says/hola'}
-                header={'About'}
-                description={
-                  "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."
-                }
-                headerSuffix={<Text style={styles.shoutOut}>NEW!!!</Text>}
-              />
-            </View>
-            <View style={styles.card} ref={customiseRef}>
-              <Card
-                imageUrl={'https://cataas.com/cat/says/meow'}
-                header={'Customise!'}
-                description={
-                  "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."
-                }
-              />
-            </View>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </ScrollContext.Provider>
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <ScrollContext.Provider value={contextValue.current}>
+          <SafeAreaView style={styles.container}>
+            <ScrollView ref={scrollView}>
+              <Navigation />
+              <Core />
+            </ScrollView>
+          </SafeAreaView>
+        </ScrollContext.Provider>
+      </PersistGate>
+    </Provider>
   );
 };
 

@@ -19,12 +19,14 @@ export const Card: FC<Props> = ({
     <View style={styles.container} {...props}>
       <Image source={{uri: imageUrl, height: 320}} />
       <View style={styles.content}>
-          <View style={styles.header}><Text style={styles.headerText}>{header}</Text>{headerSuffix}</View>
-
-          <View style={styles.description}>
-              <Text>{description}</Text>
-          </View>
-          {children}
+        <View style={styles.header}>
+          <Text style={styles.headerText}>{header}</Text>
+          {headerSuffix}
+        </View>
+        <View style={styles.description}>
+          <Text>{description}</Text>
+        </View>
+        {children}
       </View>
     </View>
   );
@@ -32,23 +34,23 @@ export const Card: FC<Props> = ({
 
 const styles = StyleSheet.create({
   container: {
-      backgroundColor: '#FFF'
+    backgroundColor: '#FFF',
   },
   content: {
-      padding: 20,
-      paddingTop: 10,
+    padding: 20,
+    paddingTop: 10,
   },
   header: {
-      flex: 1,
-      alignItems: 'flex-end',
-      flexDirection: "row",
-      justifyContent: "space-between",
+    flex: 1,
+    alignItems: 'flex-end',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
-    headerText: {
-        fontSize: 32,
-        fontWeight: "700",
-    },
-    description: {
-      paddingVertical: 10,
-    }
+  headerText: {
+    fontSize: 32,
+    fontWeight: '700',
+  },
+  description: {
+    paddingVertical: 10,
+  },
 });

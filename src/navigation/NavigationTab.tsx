@@ -8,12 +8,12 @@ import {
 
 interface Props {
   text: string;
-    withSeparator?: boolean;
+  withSeparator?: boolean;
 }
 
 const NavigationTab: React.FC<Props & TouchableOpacityProps> = ({
   text,
-                                                                    withSeparator,
+  withSeparator,
   ...props
 }) => (
   <TouchableOpacity
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#EAEAEA',
     flex: 1,
-      height: 48,
+    height: 48,
     justifyContent: 'center',
     alignItems: 'center',
   },
