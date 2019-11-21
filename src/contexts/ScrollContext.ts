@@ -1,5 +1,5 @@
 import {useRef, createContext, Context, RefObject} from 'react';
-import {ScrollView, findNodeHandle} from "react-native";
+import {ScrollView, findNodeHandle, NativeMethodsMixinStatic} from "react-native";
 
 /* Because neither symbols nor primitives can be used as keys in WeakMap, I came with "special" objects */
 const getIdentifier = (s: string) => [Symbol(s)];
@@ -18,16 +18,25 @@ interface ScrollContextType {
 export const ScrollContext: Context<Partial<ScrollContextType>> =
     createContext({});
 
+
 export function useScrollHandler() {
     const scrollView = useRef<ScrollView>(null)
-    const nodes = useRef(new WeakMap<ScrollableComponentId, RefObject<any>>())
+    const nodes = useRef(new WeakMap<ScrollableComponentId, RefObject<NativeMethodsMixinStatic>>())
 
     const scrollTo = (componentId: ScrollableComponentId) => {
         const node = nodes.current.get(componentId);
         if (node) {
-            node.current.measureLayout(findNodeHandle(scrollView.current), (_: number, y: number) => {
-                scrollView.current?.scrollTo({y})
-            })
+            const scrollViewNode = findNodeHandle(scrollView.current)
+            if (scrollViewNode) {
+
+                node.current?.measureLayout(scrollViewNode, (_: number, y: number) => {
+                        scrollView.current?.scrollTo({y})
+                    },
+                    /* Dumb function to satisfy typings. I should probably extend NativeMethodsMixinStatic with
+                    overloaded version of measureLayout where this parameter is optional, but I'm not sure if it's worth it */
+                    () => {
+                    })
+            }
         }
     }
     const registerNode = ({id, node}: { id: ScrollableComponentId, node: RefObject<any> }) => {
