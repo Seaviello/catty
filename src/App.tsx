@@ -15,7 +15,7 @@ const App = () => {
       <PersistGate persistor={persistor}>
         <ScrollContext.Provider value={contextValue.current}>
           <SafeAreaView style={styles.container}>
-            <ScrollView ref={scrollView}>
+            <ScrollView ref={scrollView} stickyHeaderIndices={[0]}>
               <Navigation />
               <Core />
             </ScrollView>

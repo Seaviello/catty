@@ -1,8 +1,7 @@
 import React from 'react';
 import {
   StyleSheet,
-  Text,
-  TouchableOpacity,
+  Text, TouchableHighlight,
   TouchableOpacityProps,
 } from 'react-native';
 
@@ -16,16 +15,17 @@ const NavigationTab: React.FC<Props & TouchableOpacityProps> = ({
   withSeparator,
   ...props
 }) => (
-  <TouchableOpacity
+  <TouchableHighlight
     {...props}
+    underlayColor='#DFDFDF'
     style={[styles.container, withSeparator && styles.withSeparator]}>
     <Text style={styles.text}>{text}</Text>
-  </TouchableOpacity>
+  </TouchableHighlight>
 );
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#EAEAEA',
+    backgroundColor: '#EFEFEF',
     flex: 1,
     height: 48,
     justifyContent: 'center',
